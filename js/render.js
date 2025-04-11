@@ -1,6 +1,7 @@
 async function fetchPosts(lang = 'ko') {
   const res = await fetch(`/api/fetchNotionData?lang=${lang}`);
   const posts = await res.json();
+  console.log("Fetched posts:", data);
   renderPosts(posts);
 }
 
