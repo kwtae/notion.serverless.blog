@@ -1,6 +1,3 @@
-const res = await fetch(`/api/fetchNotionData?lang=ko`);
-const data = await res.json();
-console.log("🔍 Notion에서 받아온 데이터:", data);
 const { Client } = require("@notionhq/client");
 require("dotenv").config();
 
