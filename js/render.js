@@ -1,13 +1,24 @@
-async function fetchPosts(lang = 'ko') {
-  const res = await fetch(`/api/fetchNotionData?lang=${lang}`);
-  const posts = await res.json();
-  console.log("Fetched posts:", data);
-  renderPosts(posts);
+let nextCursor = null;
+let isLoading = false;
+const container = document.getElementById("post-list");
+
+async function fetchPosts(lang = 'ko', cursor = null) {
+  if (isLoading) return;
+  isLoading = true;
+  showLoading();
+
+  const res = await fetch(`/api/fetchNotionData?lang=${lang}${cursor ? `&cursor=${cursor}` : ''}`);
+  const data = await res.json();
+
+  renderPosts(data.posts);
+  nextCursor = data.nextCursor;
+
+  toggleLoadMoreButton(nextCursor !== null);
+  hideLoading();
+  isLoading = false;
 }
 
 function renderPosts(posts) {
-  const container = document.getElementById('post-list');
-  container.innerHTML = '';
   posts.forEach(post => {
     const title = post.properties.Title.title[0]?.text.content || '';
     const tags = post.properties.Tags.multi_select.map(t => t.name).join(', ');
@@ -27,4 +38,19 @@ function renderPosts(posts) {
   });
 }
 
+function toggleLoadMoreButton(show) {
+  document.getElementById("load-more").style.display = show ? 'block' : 'none';
+}
+
+function showLoading() {
+  document.getElementById("loading").style.display = 'block';
+}
+function hideLoading() {
+  document.getElementById("loading").style.display = 'none';
+}
+
 document.addEventListener('DOMContentLoaded', () => fetchPosts());
+
+window.loadNextPage = () => {
+  if (nextCursor) fetchPosts('ko', nextCursor);
+};
