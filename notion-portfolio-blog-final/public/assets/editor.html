@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post Editor</title>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+</head>
+<body>
+  <h1>Post Editor</h1>
+  <div id="editorjs"></div>
+  <button onclick="save()">Save</button>
+  <script>
+    const editor = new EditorJS();
+    function save() {
+      editor.save().then((outputData) => {
+        console.log("Article data: ", outputData);
+        alert("Content saved to console (for development).");
+      }).catch((error) => {
+        console.log("Saving failed: ", error);
+      });
+    }
+  </script>
+</body>
+</html>
