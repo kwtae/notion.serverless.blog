@@ -1,0 +1,13 @@
+
+{
+  "name": "notion-blog",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "start": "vercel start"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.3"
+  }
+}

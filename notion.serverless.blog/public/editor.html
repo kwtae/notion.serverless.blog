@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>글 작성 에디터</title>
+</head>
+<body>
+  <h2>포스트 작성</h2>
+  <input type="password" id="auth" placeholder="비밀번호 입력" />
+  <input type="text" id="title" placeholder="제목" />
+  <textarea id="content" placeholder="내용" rows="10" cols="50"></textarea>
+  <input type="date" id="date" />
+  <select id="lang">
+    <option value="ko">한국어</option>
+    <option value="en">English</option>
+  </select>
+  <button onclick="submitPost()">제출</button>
+  <div id="result"></div>
+
+  <script>
+    async function submitPost() {
+      const auth = document.getElementById('auth').value;
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+      const date = document.getElementById('date').value;
+      const lang = document.getElementById('lang').value;
+
+      const res = await fetch('/api/submitPost', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + auth
+        },
+        body: JSON.stringify({ title, content, date, lang })
+      });
+
+      const result = await res.json();
+      document.getElementById('result').innerText = result.ok ? "✅ 작성 완료" : `❌ 오류: ${result.error}`;
+    }
+  </script>
+</body>
+</html>
